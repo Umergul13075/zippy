@@ -1,0 +1,31 @@
+{
+  "name": "zippy-backend",
+  "version": "1.0.0",
+  "description": "zippy -- a daraz replica",
+  "keywords": [
+    "zippy"
+  ],
+  "license": "ISC",
+  "author": "Umer gul",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon -r dotenv/config src/index.j"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.7.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.1",
+    "mongoose-aggregate-paginate-v2": "^1.1.4",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2"
+  }
+}
