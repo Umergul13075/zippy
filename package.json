@@ -10,9 +10,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon -r dotenv/config src/index.j"
+    "dev": "nodemon -r dotenv/config src/index.js"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^8.3.0",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.7",
@@ -22,7 +23,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.1",
     "mongoose-aggregate-paginate-v2": "^1.1.4",
-    "multer": "^2.0.2"
+    "multer": "^2.0.2",
+    "stripe": "^19.3.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10",

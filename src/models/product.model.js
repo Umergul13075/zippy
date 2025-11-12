@@ -22,7 +22,7 @@ const productSchema = new mongoose.Schema(
             ref: "Category", 
             required: true
         },
-        avatar: {
+        image: {
             type: String, 
             trim: true
         },
@@ -44,9 +44,18 @@ const productSchema = new mongoose.Schema(
             index: true 
         },
         brand: {
-            type: String,
+           type: mongoose.Schema.Types.ObjectId,
+            ref: "Brand",
             trim: true,
             index: true 
+        },
+        seller: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Seller"
+        },
+        inventory: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Inventory"
         },
         warranty: {
             type: String, 
@@ -54,8 +63,11 @@ const productSchema = new mongoose.Schema(
         },
         is_active: {
             type: Boolean,
-            default: true,
-           
+            default: true,  
+        },
+        is_featured: {
+        type: Boolean,
+        default: false
         }
     },
     {

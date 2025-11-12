@@ -1,68 +1,96 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 12;
+
 const userSchema = new mongoose.Schema({
-    email: {
+    username:{
         type: String,
         required: true,
+        lowercase: true,
+        unique: true,
+        trim: true,
+        index: true,
+    },
+    email:{
+        type: String,
+        required: true,
+        trim: true,
         unique: true,
         lowercase: true,
-        trim: true,
-        index: true // highly searchable
+        match:[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Please provide a valid email address"],
     },
-    full_name: {
+    fullName:{
         type: String,
         required: true,
         trim: true,
-        // Fullname is important for shipping/orders
         index: true
     },
-    phone_number:{
+    // avatar:{
+    //     type: String, // cloudinary URL
+    //     required: true
+    // },
+    // coverImage:{
+    //     type: String, // cloudinary URL
+    // },
+    
+    // we will use bcrypt npm package for securing the password
+    password:{
         type: String,
-        required: true,
-        // phone_number should be unique for valid user account
-        unique: true, 
-        trim: true,
-        index: true
-    },
-    password_hash:{
-        type: String,
-        required: [true, "Password is required"]
-    },
-    is_active: { 
-        type: Boolean,
-        default: true
+        required: [true, "Password is required"],
+        minlength: [8, "Password must be 8 characters long"]
     },
     refreshToken:{
         type: String
-    }
-
+    },
+    accountStatus: {
+        type: String,
+        enum: ["active", "suspended", "deleted"],
+        default: "active"
+    },
+    role: {
+        type: String,
+        enum: ["user", "seller", "admin"],
+        default: "user"
+    },
+    resetPasswordToken:{
+        type:String
+    },
+    resetPasswordExpiry:{
+        type: Date
+    }   
 },
-{ timestamps: true })
 
-// mongoose middleware-function runs automatically before saving user
+    {
+        timestamps : true
+    }
+)
+
 userSchema.pre("save", async function(next){
 
-    if(!this.isModified("password_hash")) return next();
-    
-    this.password_hash = await bcrypt.hash(this.password_hash, 12)
-    next()
-})
+    if(!this.isModified("password")) return next();
+    if(this.password){
+    this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
+    }
+    next();
 
-// custom method for password check if correct or not
+})
+// custom methods to check is password correct
 userSchema.methods.isPasswordCorrect = async function (password){
-  return await bcrypt.compare(password, this.password_hash)
+  return await bcrypt.compare(password, this.password)
 }
 
-// generate json web tokens 
-// access tokem
+// jwt tokens (jason web tokens)
 userSchema.methods.generateAccessToken = function(){
     return jwt.sign(
         // Payload
         {
             _id: this._id, // auto generated mongodb id
             email: this.email,
-            full_name: this.full_name
+            username: this.username,
+            fullName: this.fullName,
+            role: this.role,
+            accountStatus: this.accountStatus,
         },
         // secretKey
         process.env.ACCESS_TOKEN_SECRET,
@@ -72,7 +100,6 @@ userSchema.methods.generateAccessToken = function(){
         }
     )
 }
-// refresh token
 userSchema.methods.generateRefreshToken = function(){
     return jwt.sign(
         {
@@ -84,4 +111,17 @@ userSchema.methods.generateRefreshToken = function(){
         }
     )
 }
-export const User = mongoose.model("User", userSchema);
+
+// protecting the sensitive data so it doesn't go to frontend
+userSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    delete ret.password;
+    delete ret.refreshToken;
+    return ret;
+  },
+});
+
+userSchema.index({ username: 1, email: 1 });
+
+export const User = mongoose.models.User || mongoose.model("User", userSchema)
+

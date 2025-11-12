@@ -5,21 +5,31 @@ const categorySchema = new mongoose.Schema(
         name: {
             type: String,
             required: true,
-            unique: true, // Categories should have unique names to avoid duplications
+            unique: true, 
             trim: true,
-            index: true // Highly searchable field for the site navigation
+            index: true 
         },
-        icon_name: { // what is this field doing?
+        parentCategory: { 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Category', 
+            default: null 
+        },
+        slug: { 
+            type: String, 
+            required: true, 
+            unique: true 
+        },
+        iconUrl: { // what is this field doing?
             type: String,
             trim: true,
             
         },
-        display_order: { // what is this field doing?
+        displayOrder: { 
             type: Number,
             default: 0,
             
         },
-        is_active: {
+        isActive: {
             type: Boolean,
             default: true
         }
