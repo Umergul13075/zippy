@@ -11,8 +11,7 @@ import {
   getMonthlySearchReport
 } from "../controllers/searchHistory.controller.js";
 
-import { verifyJWT } from "../middlewares/auth.middleware.js"; // Protect routes
-import { authorizeRoles } from "../middlewares/role.middleware.js"; // Optional admin-only routes
+import { verifyJWT, authorizeRoles } from "../middlewares/auth.middleware.js"; // Protect routes
 
 const router = express.Router();
 
