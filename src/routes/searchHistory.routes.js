@@ -16,16 +16,16 @@ import { authorizeRoles } from "../middlewares/role.middleware.js"; // Optional 
 
 const router = express.Router();
 
-router.post("/", verifyJWT, createSearchHistory); // create a search
-router.get("/", verifyJWT, getAllSearchHistory); // list all search histories
-router.get("/:id", verifyJWT, getSearchHistoryById); // get single search history
-router.put("/:id", verifyJWT, updateSearchHistory); // update a search history
-router.delete("/:id", verifyJWT, deleteSearchHistory); // delete a search history
+router.post("/", verifyJWT, createSearchHistory); 
+router.get("/", verifyJWT, getAllSearchHistory); 
+router.get("/filter", verifyJWT, filterSearchHistory);
+router.post("/bulk", verifyJWT, authorizeRoles("seller"), bulkCreateSearchHistory);
+router.get("/analytics/top-queries", verifyJWT, authorizeRoles("seller"), getTopSearchQueries);
+router.get("/analytics/monthly-report", verifyJWT, authorizeRoles("seller"), getMonthlySearchReport);
 
-router.post("/bulk", verifyJWT, authorizeRoles("admin"), bulkCreateSearchHistory);
+router.get("/:id", verifyJWT, getSearchHistoryById);
+router.put("/:id", verifyJWT, updateSearchHistory); 
+router.delete("/:id", verifyJWT, deleteSearchHistory);
 
-router.get("/analytics/top-queries", verifyJWT, authorizeRoles("admin"), getTopSearchQueries);
-router.get("/analytics/monthly-report", verifyJWT, authorizeRoles("admin"), getMonthlySearchReport);
-router.get("/filter", verifyJWT, filterSearchHistory); // filter search by keyword
 
 export default router;

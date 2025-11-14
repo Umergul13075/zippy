@@ -462,11 +462,8 @@ const bulkUpdateStock = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, results, "Bulk stock update completed"));
 });
 
-//
-// ===================== ADMIN: GET ALL PRODUCTS (with moderation filter) =====================
-// Route: GET /api/v1/admin/products
-//
-const adminGetAllProducts = asyncHandler(async (req, res) => {
+
+const   sellerGetAllProducts = asyncHandler(async (req, res) => {
   const { page = 1, limit = 20, status, search } = req.query;
   const query = {};
   if (status === "active") query.is_active = true;
@@ -508,6 +505,6 @@ export {
   getProductsByBrand,
   getProductReviews,
   bulkUpdateStock,
-  adminGetAllProducts,
+  sellerGetAllProducts,
   recommendProducts,
 };

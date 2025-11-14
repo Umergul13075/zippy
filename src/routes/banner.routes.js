@@ -9,17 +9,17 @@ import {
     bulkUpdateDisplayOrder
 } from "../controllers/banner.controller.js";
 
-import { verifyJWT, authorizeRoles } from "../middlewares/auth.middleware.js";
+import { verifyJWT} from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 
-router.post("/", verifyJWT, authorizeRoles("admin"), createBanner);
-router.get("/", verifyJWT, authorizeRoles("admin"), getBanners);
-router.get("/:id", verifyJWT, authorizeRoles("admin"), getBannerById);
-router.put("/:id", verifyJWT, authorizeRoles("admin"), updateBanner);
-router.delete("/:id", verifyJWT, authorizeRoles("admin"), deleteBanner);
-router.put("/bulk/display-order", verifyJWT, authorizeRoles("admin"), bulkUpdateDisplayOrder);
+router.post("/", verifyJWT, createBanner);
+router.get("/", verifyJWT, getBanners);
+router.get("/:id", verifyJWT, getBannerById);
+router.put("/:id", verifyJWT,  updateBanner);
+router.delete("/:id", verifyJWT, deleteBanner);
+router.put("/bulk/display-order", verifyJWT, bulkUpdateDisplayOrder);
 
 
 router.get("/active", getActiveBanners);

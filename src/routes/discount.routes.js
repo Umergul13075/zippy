@@ -16,8 +16,7 @@ import {
   getExpiredCoupons
 } from "../controllers/discount.controller.js";
 
-import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { authorizeRoles } from "../middlewares/role.middleware.js";
+import { verifyJWT, authorizeRoles  } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -28,15 +27,15 @@ router.get("/my-used", verifyJWT, getUserUsedCoupons);
 router.get("/expired", verifyJWT, getExpiredCoupons);
 router.get("/:couponId", verifyJWT, getCouponById);
 
-router.post("/", verifyJWT, authorizeRoles("admin"), createCoupon);
-router.post("/bulk", verifyJWT, authorizeRoles("admin"), bulkCreateCoupons);
-router.put("/:couponId", verifyJWT, authorizeRoles("admin"), updateCoupon);
-router.put("/toggle/:couponId", verifyJWT, authorizeRoles("admin"), toggleCouponStatus);
-router.delete("/:couponId", verifyJWT, authorizeRoles("admin"), deleteCoupon);
-router.delete("/remove-user/:couponId/:userId", verifyJWT, authorizeRoles("admin"), removeUserFromCoupon);
-
 router.post("/apply", verifyJWT, applyCoupon);
+router.post("/", verifyJWT, authorizeRoles("seller"), createCoupon);
+router.post("/bulk", verifyJWT, authorizeRoles("seller"), bulkCreateCoupons);
+router.put("/:couponId", verifyJWT, authorizeRoles("seller"), updateCoupon);
+router.put("/toggle/:couponId", verifyJWT, authorizeRoles("seller"), toggleCouponStatus);
+router.delete("/:couponId", verifyJWT, authorizeRoles("seller"), deleteCoupon);
+router.delete("/remove-user/:couponId/:userId", verifyJWT, authorizeRoles("seller"), removeUserFromCoupon);
 
-router.get("/stats/summary", verifyJWT, authorizeRoles("admin"), getCouponStats);
+
+router.get("/stats/summary", verifyJWT, authorizeRoles("seller"), getCouponStats);
 
 export default router;

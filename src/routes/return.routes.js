@@ -12,32 +12,31 @@ import {
   filterReturns,
   getMonthlyReturnReport
 } from "../controllers/return.controller.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { authorizeRoles } from "../middlewares/role.middleware.js";
+import { verifyJWT, authorizeRoles } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 
 router.post("/", verifyJWT, createReturnRequest);
 
-router.post("/bulk", verifyJWT, authorizeRoles("admin"), bulkCreateReturns);
+router.post("/bulk", verifyJWT, authorizeRoles("seller"), bulkCreateReturns);
+
+router.get("/order/:orderId", verifyJWT, getReturnsByOrderId);
+
+router.get("/analytics/summary", verifyJWT, authorizeRoles("seller"), getReturnAnalytics);
+
+router.get("/analytics/monthly", verifyJWT, authorizeRoles("seller"), getMonthlyReturnReport);
+
+router.get("/filter", verifyJWT, authorizeRoles("seller"), filterReturns);
+
+router.put("/bulk/update", verifyJWT, authorizeRoles("seller"), bulkUpdateReturnStatus);
 
 router.get("/", verifyJWT, getAllReturns);
 
 router.get("/:id", verifyJWT, getReturnById);
 
-router.put("/:id/status", verifyJWT, authorizeRoles("admin"), updateReturnStatus);
+router.put("/:id/status", verifyJWT, authorizeRoles("seller"), updateReturnStatus);
 
-router.delete("/:id", verifyJWT, authorizeRoles("admin"), deleteReturnRequest);
-
-router.get("/order/:orderId", verifyJWT, getReturnsByOrderId);
-
-router.get("/analytics/summary", verifyJWT, authorizeRoles("admin"), getReturnAnalytics);
-
-router.put("/bulk/update", verifyJWT, authorizeRoles("admin"), bulkUpdateReturnStatus);
-
-router.get("/filter", verifyJWT, authorizeRoles("admin"), filterReturns);
-
-router.get("/analytics/monthly", verifyJWT, authorizeRoles("admin"), getMonthlyReturnReport);
+router.delete("/:id", verifyJWT, authorizeRoles("seller"), deleteReturnRequest);
 
 export default router;

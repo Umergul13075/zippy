@@ -199,7 +199,7 @@ const setDefaultAddress = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, address, "Default address set successfully"));
 });
 
-const getAllAddressesAdmin = asyncHandler(async (req, res) => {
+const getAllAddresses = asyncHandler(async (req, res) => {
     const { page = 1, limit = 20, sort = "-createdAt" } = req.query;
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
@@ -229,6 +229,6 @@ export {
     restoreAddress,
     softDeleteAddress,
     bulkDeleteAddresses,
-    getAllAddressesAdmin
+    getAllAddresses
     
 }

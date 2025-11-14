@@ -15,27 +15,44 @@ import {
   handleStripeWebhook,
 } from "../controllers/payment.controller.js";
 
-import { verifyJWT } from "../middlewares/auth.middleware.js"; 
-import { authorizeRoles } from "../middlewares/role.middleware.js"; 
+import { verifyJWT, authorizeRoles } from "../middlewares/auth.middleware.js"; 
+
 
 const router = express.Router();
 
 
 router.post("/", verifyJWT, createPayment);
-router.get("/user/:userId", verifyJWT, getUserPayments); 
 router.patch("/:id/retry", verifyJWT, retryPayment); 
+router.get("/user/:userId", verifyJWT, getUserPayments); 
 
-router.get("/seller/:sellerId", verifyJWT, authorizeRoles("seller", "admin"), getSellerPayments); 
+router.get("/seller/:sellerId", verifyJWT, authorizeRoles("seller"), getSellerPayments); 
+
+router.get("/:id", verifyJWT, getPaymentById);
+
 
 // admin routes
-router.get("/", verifyJWT, authorizeRoles("admin"), getAllPayments);
-router.get("/stats", verifyJWT, authorizeRoles("admin"), getPaymentStats);
-router.get("/recent", verifyJWT, authorizeRoles("admin"), getRecentPayments);
+router.get("/", verifyJWT, authorizeRoles("seller"), getAllPayments);
+
+router.get("/stats", verifyJWT, authorizeRoles("seller"), getPaymentStats);
+
+
+router.get("/recent", verifyJWT, authorizeRoles("seller"), getRecentPayments);
+
+
 router.post("/webhook", express.raw({ type: "application/json" }), handleStripeWebhook);
-router.get("/filter", verifyJWT, authorizeRoles("admin"), getPaymentsByFilter);
-router.get("/:id", verifyJWT, authorizeRoles("admin", "seller", "user"), getPaymentById);
-router.patch("/:id/status", verifyJWT, authorizeRoles("admin"), updatePaymentStatus); 
-router.patch("/:id/refund", verifyJWT, authorizeRoles("admin"), refundPayment); 
-router.delete("/:id", verifyJWT, authorizeRoles("admin"), deletePayment);
+
+
+router.get("/filter", verifyJWT, authorizeRoles("seller"), getPaymentsByFilter);
+
+
+
+
+router.patch("/:id/status", verifyJWT, authorizeRoles("seller"), updatePaymentStatus); 
+
+
+router.patch("/:id/refund", verifyJWT, authorizeRoles("seller"), refundPayment); 
+
+
+router.delete("/:id", verifyJWT, authorizeRoles("seller"), deletePayment);
 
 export default router;

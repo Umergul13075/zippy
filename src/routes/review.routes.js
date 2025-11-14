@@ -19,13 +19,13 @@ const router = express.Router();
 
 router.post("/", verifyJWT, createReview);
 router.get("/", getAllReviews);
-router.get("/:id", getReviewById);
-router.delete("/:id", verifyJWT, deleteReview);
-router.put("/:id", verifyJWT, updateReview);
 router.get("/product/:productId", getReviewsByProduct);
-router.patch("/:id/like", verifyJWT, toggleReviewLike);
 router.get("/product/:productId/average", getAverageRatingForProduct);
 router.get("/user/:userId", getReviewsByUser);
 router.get("/top", getTopRatedProducts);
+router.patch("/:id/like", verifyJWT, toggleReviewLike);
+router.put("/:id", verifyJWT, updateReview);
+router.delete("/:id", verifyJWT, deleteReview);
+router.get("/:id", getReviewById);
 
 export default router;

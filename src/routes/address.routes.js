@@ -10,7 +10,7 @@ import {
   restoreAddress,
   softDeleteAddress,
   bulkDeleteAddresses,
-  getAllAddressesAdmin,
+  getAllAddresses,
 } from "../controllers/address.controller.js";
 
 import { verifyJWT, authorizeRoles } from "../middlewares/auth.middleware.js";
@@ -28,6 +28,6 @@ router.patch("/:id/restore", verifyJWT, restoreAddress);
 router.post("/bulk-delete", verifyJWT, bulkDeleteAddresses);
 router.patch("/:id/default", verifyJWT, setDefaultAddress);
 
-router.get("/admin/all", verifyJWT, authorizeRoles, getAllAddressesAdmin);
+router.get("/all", verifyJWT, getAllAddresses);
 
 export default router;

@@ -31,9 +31,7 @@ router.get("/:chatId", getChatById);
 router.get("/previews/list", getChatPreviews);
 router.post("/:chatId/report", reportChat);
 
-router.get("/admin/all", getAllChatsForAdmin);
-router.put("/admin/:chatId/resolve", resolveReportedChat);
-router.get("/admin/search", searchChats);
+router.get("/search", searchChats);
 
 
 router.delete("/:chatId", deleteChat);

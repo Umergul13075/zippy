@@ -12,8 +12,7 @@ import {
   getNotificationsByType
 } from "../controllers/notifications.controller.js";
 
-import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { authorizeRoles } from "../middlewares/role.middleware.js";
+import { verifyJWT, authorizeRoles } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -21,14 +20,14 @@ const router = express.Router();
 router.post(
   "/",
   verifyJWT,
-  authorizeRoles("admin"),
+  authorizeRoles("seller"),
   createNotification
 );
 
 router.get(
   "/",
   verifyJWT,
-  authorizeRoles("admin"),
+  authorizeRoles("seller"),
   getNotifications
 );
 
@@ -76,7 +75,7 @@ router.delete(
 router.delete(
   "/user/:userId",
   verifyJWT,
-  authorizeRoles("admin"),
+  authorizeRoles("seller"),
   deleteAllNotificationsForUser
 );
 
@@ -84,7 +83,7 @@ router.delete(
 router.get(
   "/type/:type",
   verifyJWT,
-  authorizeRoles("admin"),
+  authorizeRoles("seller"),
   getNotificationsByType
 );
 

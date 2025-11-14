@@ -24,11 +24,11 @@ router.post("/reset-password", resetPassword);
 router.get("/refresh-token", refreshAccessToken);
 router.use(verifyJWT);
 router.get("/me", getCurrentUser);
+router.get("/:id", getUserById);
 router.put("/update", updateAccountDetails);
 router.put("/change-password", changeCurrentPassword);
 router.post("/logout", logoutUser);  
 router.delete("/delete", deleteUser);
 router.put("/deactivate", deactivateAccount);    
-router.get("/:id", getUserById);
 
 export default router;

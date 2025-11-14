@@ -16,33 +16,33 @@ import {
   getProductsByBrand,
   getProductReviews,
   bulkUpdateStock,
-  adminGetAllProducts,
+  sellerGetAllProducts,
   recommendProducts,
 } from "../controllers/product.controller.js";
 
-import { verifyJWT } from "../middlewares/auth.middleware.js";
-import { authorizeRoles } from "../middlewares/role.middleware.js";
+import { verifyJWT, authorizeRoles } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
 const router = express.Router();
 router.get("/", getAllProducts);
 
-router.get("/:id", getProductById);
 router.get("/search/query", searchProducts);
 router.get("/filter/query", filterProducts);
 router.get("/featured/list", getFeaturedProducts);
 router.get("/top-selling/list", getTopSellingProducts);
-router.get("/related/:id", getRelatedProducts);
+router.get("/recommended/list", recommendProducts);
 router.get("/category/:categoryId", getProductsByCategory);
 router.get("/brand/:brandId", getProductsByBrand);
+router.get("/related/:id", getRelatedProducts);
+router.get("/seller/:id",verifyJWT,authorizeRoles("seller"),getSellerProducts);
 router.get("/:id/reviews", getProductReviews);
-router.get("/recommended/list", recommendProducts);
+router.get("/:id", getProductById);
 
 
 router.post(
   "/create",
   verifyJWT,
-  authorizeRoles("seller", "admin"),
+  authorizeRoles("seller"),
   upload.single("image"),
   createProduct
 );
@@ -50,45 +50,38 @@ router.post(
 router.put(
   "/:id",
   verifyJWT,
-  authorizeRoles("seller", "admin"),
+  authorizeRoles("seller"),
   updateProduct
 );
 
 router.delete(
   "/:id",
   verifyJWT,
-  authorizeRoles("seller", "admin"),
+  authorizeRoles("seller"),
   deleteProduct
 );
 
 router.put(
   "/stock/:id",
   verifyJWT,
-  authorizeRoles("seller", "admin"),
+  authorizeRoles("seller"),
   updateStock
 );
 
 
-router.get(
-  "/seller/:id",
-  verifyJWT,
-  authorizeRoles("seller", "admin"),
-  getSellerProducts
-);
-
 router.put(
   "/bulk-stock/update",
   verifyJWT,
-  authorizeRoles("seller", "admin"),
+  authorizeRoles("seller"),
   bulkUpdateStock
 );
 
 
 router.get(
-  "/admin/all",
+  "/seller/all",
   verifyJWT,
-  authorizeRoles("admin"),
-  adminGetAllProducts
+  authorizeRoles("seller"),
+  sellerGetAllProducts
 );
 
 export default router;

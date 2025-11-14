@@ -15,8 +15,8 @@ import {
   clearInventory
 } from "../controllers/inventory.controller.js";
 
-import { verifyJWT } from "../middlewares/auth.middleware.js"; 
-import { authorizeRoles } from "../middlewares/auth.middleware.js"; 
+import { verifyJWT, authorizeRoles } from "../middlewares/auth.middleware.js"; 
+ 
 
 const router = express.Router();
 
@@ -24,27 +24,25 @@ const router = express.Router();
 router.use(verifyJWT);
 
 
-router.post("/", createInventory);
+router.post("/", authorizeRoles("seller"), createInventory);
+router.put("/:inventoryId", authorizeRoles("seller"), updateInventory); 
+router.delete("/:inventoryId", authorizeRoles("seller"), deleteInventory);
+router.put("/:inventoryId/adjust", authorizeRoles("seller"), adjustInventoryQuantity);
+router.post("/bulk-update", authorizeRoles("seller"), bulkUpdateInventory);
+router.get("/seller/:sellerId", authorizeRoles("seller"), getInventoryBySeller);
+router.get("/stats", authorizeRoles("seller"), getInventoryStats); 
+
+
 router.get("/", getInventories); 
-router.get("/:inventoryId", getInventoryById); 
-router.put("/:inventoryId", updateInventory); 
-router.delete("/:inventoryId", deleteInventory);
-
-router.put("/:inventoryId/adjust", adjustInventoryQuantity);
-
-
-router.get("/seller/:sellerId", getInventoryBySeller);
-
-
-router.get("/search", searchInventory);
-
-
-router.get("/low-stock", getLowStockInventories); 
-router.post("/bulk-update", bulkUpdateInventory); 
-router.get("/stats", getInventoryStats); 
+router.get("/:inventoryId",getInventoryById); 
 router.get("/variant/:variantId", getInventoryByVariant);
+router.get("/search", searchInventory);
+router.get("/low-stock", authorizeRoles("seller"), getLowStockInventories); 
 
-// Admin only route to clear inventories
-router.delete("/clear", authorizeRoles, clearInventory); 
+
+
+
+// work in controller to do
+// router.delete("/clear", authorizeRoles ("seller"), clearInventory); 
 
 export default router;
