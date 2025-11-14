@@ -17,14 +17,14 @@ const router = express.Router();
 
 
 router.get("/", verifyJWT, getAllSubcategories);
-router.get("/analytics", verifyJWT, authorizeRoles("admin"), getSubcategoryAnalytics);
+router.get("/analytics", verifyJWT, authorizeRoles("seller"), getSubcategoryAnalytics);
 router.get("/:id", verifyJWT, getSubcategoryById);
 
-router.post("/", verifyJWT, authorizeRoles("admin"), createSubcategory);
-router.post("/bulk", verifyJWT, authorizeRoles("admin"), bulkCreateSubcategories);
-router.put("/:id", verifyJWT, authorizeRoles("admin"), updateSubcategory);
-router.put("/restore/:id", verifyJWT, authorizeRoles("admin"), restoreSubcategory);
-router.put("/soft-delete/:id", verifyJWT, authorizeRoles("admin"), softDeleteSubcategory);
-router.delete("/:id", verifyJWT, authorizeRoles("admin"), deleteSubcategory);
+router.post("/", verifyJWT, authorizeRoles("seller"), createSubcategory);
+router.post("/bulk", verifyJWT, authorizeRoles("seller"), bulkCreateSubcategories);
+router.put("/:id", verifyJWT, authorizeRoles("seller"), updateSubcategory);
+router.put("/restore/:id", verifyJWT, authorizeRoles("seller"), restoreSubcategory);
+router.put("/soft-delete/:id", verifyJWT, authorizeRoles("seller"), softDeleteSubcategory);
+router.delete("/:id", verifyJWT, authorizeRoles("seller"), deleteSubcategory);
 
 export default router;

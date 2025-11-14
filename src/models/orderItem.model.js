@@ -28,5 +28,7 @@ const orderItemSchema = new mongoose.Schema({
 
 });
 
+orderItemSchema.index({ order: 1 });
+orderItemSchema.index({ product: 1 });
 export const OrderItem = mongoose.model("OrderItem", orderItemSchema);
 

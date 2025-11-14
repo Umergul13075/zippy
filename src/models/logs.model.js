@@ -27,5 +27,9 @@ const analyticsSchema = new mongoose.Schema({
 
 });
 
+analyticsSchema.index({ user: 1 });
+analyticsSchema.index({ action: 1 });
+analyticsSchema.index({ entityId: 1 });
+analyticsSchema.index({ timestamp: -1 });
 export const Analytics = mongoose.model("Analytics", analyticsSchema);
 

@@ -32,4 +32,6 @@ const productSpecificationSchema = new mongoose.Schema(
     }
 );
 
+productSpecificationSchema.index({ product_id: 1, spec_key: 1 });
+productSpecificationSchema.index({ spec_value: 1 });
 export const ProductSpecification = mongoose.model("ProductSpecification", productSpecificationSchema);

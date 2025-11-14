@@ -26,13 +26,13 @@ const userSchema = new mongoose.Schema({
         trim: true,
         index: true
     },
-    // avatar:{
-    //     type: String, // cloudinary URL
-    //     required: true
-    // },
-    // coverImage:{
-    //     type: String, // cloudinary URL
-    // },
+    avatar:{
+        type: String, // cloudinary URL
+        required: true
+    },
+    coverImage:{
+        type: String, // cloudinary URL
+    },
     
     // we will use bcrypt npm package for securing the password
     password:{
@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["user", "seller", "admin"],
+        enum: ["user", "seller"],
         default: "user"
     },
     resetPasswordToken:{

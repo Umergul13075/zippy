@@ -25,11 +25,17 @@ const transactionSchema = new mongoose.Schema({
     invoiceUrl: { 
         type: String 
     },
-    createdAt: { 
-        type: Date, 
-        default: Date.now 
+    
+},  
+    { 
+        timestamps: true 
     }
-});
+);
 
+transactionSchema.index({ order: 1 });   
+transactionSchema.index({ seller: 1 });  
+transactionSchema.index({ status: 1 });  
+transactionSchema.index({ createdAt: -1 }); 
+transactionSchema.index({ seller: 1, status: 1 });
 export const Transaction = mongoose.model("Transaction", transactionSchema);
 

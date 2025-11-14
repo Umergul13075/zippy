@@ -3,18 +3,18 @@ import mongoose from "mongoose";
 const orderSchema = new mongoose.Schema({
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "User", required: true 
-        
+        ref: "User",
+        required: true 
     },
     seller: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "Seller", required: true 
-        
+        ref: "Seller", 
+        required: true 
     },
     items: [{ 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: "OrderItem", required: true 
-        
+        ref: "OrderItem", 
+        required: true 
     }],
     payment: { 
         type: mongoose.Schema.Types.ObjectId, 

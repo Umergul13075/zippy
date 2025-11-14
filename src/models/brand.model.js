@@ -7,7 +7,7 @@ const brandSchema = new mongoose.Schema({
     },
     createdBy:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Admin",
+        ref: "seller",
     },
     slug: { 
         type: String, 

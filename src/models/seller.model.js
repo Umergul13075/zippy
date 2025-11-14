@@ -43,4 +43,8 @@ const sellerSchema = new mongoose.Schema({
     }]
 }, { timestamps: true });
 
+
+sellerSchema.index({ shop_name: 1 });
+sellerSchema.index({ is_verified: 1 });
+sellerSchema.index({ phone_number: 1 });
 export const Seller = mongoose.model("Seller", sellerSchema);

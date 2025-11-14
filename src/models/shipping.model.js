@@ -33,4 +33,10 @@ const shippingSchema = new mongoose.Schema({
 
 });
 
+shippingSchema.index({ order: 1 }); 
+shippingSchema.index({ status: 1 });
+shippingSchema.index({ carrier: 1 }); 
+shippingSchema.index({ deliveredAt: 1 }); 
+shippingSchema.index({ order: 1, status: 1 });
+
 export const Shipping = mongoose.model("Shipping", shippingSchema);

@@ -21,11 +21,11 @@ router.get("/", verifyJWT, getAllShippings);
 router.get("/:id", verifyJWT, getShippingById);
 router.get("/order/:orderId", verifyJWT, getShippingByOrderId); 
 
-router.put("/:id", verifyJWT, authorizeRoles("admin"), updateShipping); 
-router.put("/bulk/status", verifyJWT, authorizeRoles("admin"), bulkUpdateShippingStatus); 
-router.put("/soft-delete/:id", verifyJWT, authorizeRoles("admin"), softDeleteShipping); 
-router.put("/restore/:id", verifyJWT, authorizeRoles("admin"), restoreShipping); 
-router.delete("/:id", verifyJWT, authorizeRoles("admin"), deleteShipping); 
-router.get("/analytics/summary", verifyJWT, authorizeRoles("admin"), getShippingAnalytics); 
+router.put("/:id", verifyJWT, authorizeRoles("seller"), updateShipping); 
+router.put("/bulk/status", verifyJWT, authorizeRoles("seller"), bulkUpdateShippingStatus); 
+router.put("/soft-delete/:id", verifyJWT, authorizeRoles("seller"), softDeleteShipping); 
+router.put("/restore/:id", verifyJWT, authorizeRoles("seller"), restoreShipping); 
+router.delete("/:id", verifyJWT, authorizeRoles("seller"), deleteShipping); 
+router.get("/analytics/summary", verifyJWT, authorizeRoles("seller"), getShippingAnalytics); 
 
 export default router;

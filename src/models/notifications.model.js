@@ -17,12 +17,17 @@ const notificationSchema = new mongoose.Schema({
     },
     status: { 
         type: String, 
-        enum: ["read", "unread"], default: "unread" 
+        enum: ["read", "unread"], 
+        default: "unread" 
     },
     createdAt: { 
         type: Date, 
         default: Date.now 
     }
 });
+
+notificationSchema.index({ user: 1 });
+notificationSchema.index({ status: 1 });
+notificationSchema.index({ createdAt: -1 });
 
 export const Notification = mongoose.model("Notification", notificationSchema);
